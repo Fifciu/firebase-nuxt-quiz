@@ -8,7 +8,7 @@
       <h2 class="subtitle">
         Firebase Nuxt simple project
       </h2>
-      <nuxt-link class="fib-button" to="/pick-quiz" @click="exitAnim = true">Start</nuxt-link>
+      <nuxt-link class="fib-button" to="/auth" @click="exitAnim = true">Start</nuxt-link>
       <i class="fas fa-angle-double-up fib-intro-down" :class="{'not-showed': !arrowShowed}"></i>
     </div>
   </section>

@@ -1,5 +1,6 @@
 <template>
     <section class="container quiz-picker" :class="{'finished': yetAnimed}">
+        <cmp-starting-modal :name="currentName" v-if="modal"/>
         <div>
             <h1>Pick quiz</h1>
             <quiz-picker
@@ -8,31 +9,38 @@
                     :name="i.name"
                     :icon="i.icon"
                     :questions_amount="Object.keys(i.questions).length"
+                    @pick="(name) => { currentName = name; modal = true }"
             />
-            <quiz-picker
-                    v-for="(i,index) in quizes"
-                    :key="index"
-                    :name="i.name"
-                    :icon="i.icon"
-                    :questions_amount="Object.keys(i.questions).length"
-            />
-            <quiz-picker
-                    v-for="(i,index) in quizes"
-                    :key="index"
-                    :name="i.name"
-                    :icon="i.icon"
-                    :questions_amount="Object.keys(i.questions).length"
-            />
+            <!--<quiz-picker-->
+                    <!--v-for="(i,index) in quizes"-->
+                    <!--:key="index+5"-->
+                    <!--:name="i.name"-->
+                    <!--:icon="i.icon"-->
+                    <!--:questions_amount="Object.keys(i.questions).length"-->
+                    <!--:properAnswears="3"-->
+            <!--/>-->
+            <!--<quiz-picker-->
+                    <!--v-for="(i,index) in quizes"-->
+                    <!--:key="index+10"-->
+                    <!--:name="i.name"-->
+                    <!--:icon="i.icon"-->
+                    <!--:questions_amount="Object.keys(i.questions).length"-->
+            <!--/>-->
         </div>
     </section>
 </template>
 
 <script>
     import quizPicker from '@/components/QuizPicker.vue';
+    import cmpStartingModal from '@/components/StartingModal';
 
   export default {
+    middleware: 'protected',
     async asyncData(context){
-      let data = await context.app.$fir.database().ref("quizes").orderByChild("name").once("value");
+      let data = await context.app.$fir.database()
+        .ref("quizes")
+        .orderByChild("name")
+        .once("value");
       data = data.toJSON();
       return {
         quizes: data
@@ -40,16 +48,20 @@
     },
     data(){
       return {
-        yetAnimed: false
+        yetAnimed: false,
+        modal: false,
+        currentName: ''
       };
     },
     mounted(){
+      this.$store.commit('quizes/setQuizes', this.quizes);
       setTimeout(()=>{
         this.yetAnimed = true;
       }, 600)
     },
     components:{
-      quizPicker
+      quizPicker,
+      cmpStartingModal
     }
   };
 </script>
@@ -57,6 +69,7 @@
 <style lang="scss">
     section.container.quiz-picker{
         background:rgba(0,0,0,0);
+        display:block;
     }
     .quiz-picker{
         > div{

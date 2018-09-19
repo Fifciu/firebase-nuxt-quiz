@@ -1,5 +1,8 @@
 <template>
   <div class="app-core">
+      <div class="logout" v-if="$store.state.isLogged">
+            sss
+      </div>
       <nuxt/>
   </div>
 </template>

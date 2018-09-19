@@ -53,7 +53,7 @@ module.exports = {
       './plugins/firebase.js'
   ],
   modules: [
-
+    'nuxt-material-design-icons'
   ]//,
   // router:{
   //   middleware: 'delay'
