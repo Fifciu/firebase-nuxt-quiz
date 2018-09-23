@@ -1,6 +1,7 @@
 <template>
   <section class="container-auth" :class="{'finished': yetAnimed, 'exiting': exitAnim}">
-    <div>
+      <SemipolarSpinner class="LoadingSpinner" :class="{'visible': asyncAction}"/>
+      <div>
       <i class="material-icons fib-logo">
         fingerprint
       </i>
@@ -8,7 +9,7 @@
         Auth
       </h1>
       <div class="form">
-        <form @submit.prevent="sign">
+        <form @submit.prevent="">
             <transition-group name="fade-page">
               <span
                       class="form-warning animated"
@@ -49,8 +50,15 @@
                     @blur="wasInPassword = true"
                     :key="4"/>
           </transition-group>
-            <input type="submit" class="fib-button" value="Sign up/in"
-                   :disabled="!passwordLength || !emailLength"/>
+            <div>
+                <input type="submit" class="fib-button" value="Sign up"
+                       :disabled="!passwordLength || !emailLength"
+                       @click="signUp"
+                />
+                <input type="submit" class="fib-button fib-button--green" value="Or in"
+                       :disabled="!passwordLength || !emailLength"
+                       @click="signIn"/>
+            </div>
         </form>
       </div>
     </div>
@@ -58,6 +66,8 @@
 </template>
 
 <script>
+    import SemipolarSpinner from '@/components/SemipolarSpinner.vue';
+
 export default {
   transition: 'page',
   middleware: 'guest',
@@ -70,8 +80,12 @@ export default {
       wasInEmail: false,
       password: '',
       wasInPassword: false,
-      validated: false
+      validated: false,
+      asyncAction: false
     };
+  },
+  components:{
+    SemipolarSpinner
   },
   mounted(){
     setTimeout(() => {
@@ -94,49 +108,36 @@ export default {
     }
   },
   methods:{
-    async login(){
-      try{
-            await this.$fir.auth().signInWithEmailAndPassword(this.email, this.password);
+    signIn(){
+      // this.asyncAction = true;
+      // try{
+      //       let {user} = await this.$fir.auth().signInWithEmailAndPassword(this.email, this.password);
+      //       this.$store.commit('user/setUser', user);
+      //       this.$router.push('/pick-quiz');
+      // } catch(e){
+      //       //ERROR
+      // }
+      // this.asyncAction = false;
+      this.asyncAction = true;
+      this.$fir.auth().signInWithEmailAndPassword(this.email, this.password)
+          .then(result =>{
+            this.$store.commit('user/setUser', result.user);
             this.$router.push('/pick-quiz');
-      } catch(e){
-            console.log(error, 'err');
-      }
-    },
-    async sign(){
-      try{
-        let result = await this.$fir.auth().createUserWithEmailAndPassword(this.email, this.password);
-
-      } catch(error){
-        let errorCode = error.code;
-        let errorMessage = error.message;
-
-        if (errorCode == 'auth/weak-password') {
-          alert('The password is too weak.');
-        } else if(errorCode == 'auth/email-already-in-use'){
-
-        } else {
-          alert(errorMessage);
-        }
-      }
-      this.$fir.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then(result => {
-          console.log(result, "Account created");
-          console.log(this.$fir.auth().currentUser);
-      }).catch(error => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // [START_EXCLUDE]
-        if (errorCode == 'auth/weak-password') {
-          alert('The password is too weak.');
-        } else if(errorCode == 'auth/email-already-in-use'){
-          this.login();
-        } else {
-          alert(errorMessage);
-        }
-        console.log(error);
-        // [END_EXCLUDE]
+        }).catch(err => {
+            console.log('err', err);
       });
+      this.asyncAction = false;
+    },
+    async signUp(){
+      this.asyncAction = true;
+      try{
+        let {user} = await this.$fir.auth().createUserWithEmailAndPassword(this.email, this.password);
+        this.$store.commit('user/setUser', user);
+        this.$router.push('/pick-quiz');
+      }catch(e){
+        // ERROR
+      }
+      this.asyncAction = false;
     }
   }
 }
@@ -174,6 +175,24 @@ export default {
       font-family: 'Ubuntu';
       font-size:.82em;
     }
+
+      .LoadingSpinner{
+          transform:translateX(-1000%);
+          position:fixed;
+          opacity:0;
+          transition:.7s;
+      }
+      .LoadingSpinner.visible{
+          transform:translateX(0%);
+          opacity:1;
+      }
+      .LoadingSpinner+div{
+          transition:1.4s;
+      }
+      .LoadingSpinner.visible+div{
+          filter:blur(6px) grayscale(100%);
+      }
+
     div.form{
       padding-top: 20px;
       ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -257,10 +276,42 @@ export default {
 
     .fib-button{
       opacity:0;
-      transform: translateX(-50%);
       transition: .8s;
       font-size:.8em;
+        margin: 0 auto;
+        border-top-right-radius:0;
+        border-bottom-right-radius:0;
+        padding: 9px 18px;
+        padding-right: 9px;
+        &:last-of-type{
+            margin-top:8px;
+        }
+        &:first-of-type{
+            &:not(:disabled):hover{
+                -webkit-box-shadow: 10px 10px 55px -12px rgba(0,0,0,0.75);
+                -moz-box-shadow: 10px 10px 55px -12px rgba(0,0,0,0.75);
+                box-shadow: 10px 10px 55px -12px rgba(0,0,0,0.75);
+                transform:translateY(-5%) scale(1.1) translateX(-10%);
+            }
+        }
     }
+
+      .fib-button--green{
+          background: #fccd18;
+          color:#000;
+          border-color: #fccd18;
+          border-top-left-radius:0;
+          border-bottom-left-radius:0;
+          border-top-right-radius:12px;
+          border-bottom-right-radius:12px;
+          padding-right:18px;
+          &:not(:disabled):hover{
+              -webkit-box-shadow: 10px 10px 55px -12px rgba(0,0,0,0.75);
+              -moz-box-shadow: 10px 10px 55px -12px rgba(0,0,0,0.75);
+              box-shadow: 10px 10px 55px -12px rgba(0,0,0,0.75);
+              transform:translateY(-5%) scale(1.1) translateX(10%) !important;
+          }
+      }
 
     &.finished{
       h1.title, h2.subtitle, .fib-button{

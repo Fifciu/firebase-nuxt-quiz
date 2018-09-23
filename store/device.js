@@ -1,5 +1,3 @@
-import Vuex from 'vuex';
-
 export const state = () => ({
   deviceType: "desktop"
   /*
@@ -21,3 +19,5 @@ export const mutations = {
     state.deviceType = payload;
   }
 };
+
+export const strict = false;

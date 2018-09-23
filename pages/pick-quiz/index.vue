@@ -1,6 +1,5 @@
 <template>
     <section class="container quiz-picker" :class="{'finished': yetAnimed}">
-        <cmp-starting-modal :name="currentName" v-if="modal"/>
         <div>
             <h1>Pick quiz</h1>
             <quiz-picker
@@ -9,7 +8,7 @@
                     :name="i.name"
                     :icon="i.icon"
                     :questions_amount="Object.keys(i.questions).length"
-                    @pick="(name) => { currentName = name; modal = true }"
+                    @pick="startQuiz(index)"
             />
             <!--<quiz-picker-->
                     <!--v-for="(i,index) in quizes"-->
@@ -32,7 +31,6 @@
 
 <script>
     import quizPicker from '@/components/QuizPicker.vue';
-    import cmpStartingModal from '@/components/StartingModal';
 
   export default {
     middleware: 'protected',
@@ -59,9 +57,14 @@
         this.yetAnimed = true;
       }, 600)
     },
+    methods:{
+      startQuiz(name){
+        this.$store.commit('quizes/setCurrentQuiz', name);
+        this.$router.push({path: '/quiz'});
+      }
+    },
     components:{
-      quizPicker,
-      cmpStartingModal
+      quizPicker
     }
   };
 </script>

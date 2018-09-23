@@ -21,7 +21,8 @@
     "epic-spinners": "^1.0.3",
     "firebase": "^5.4.1",
     "nuxt": "^1.0.0",
-    "nuxt-material-design-icons": "^1.0.4"
+    "nuxt-material-design-icons": "^1.0.4",
+    "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

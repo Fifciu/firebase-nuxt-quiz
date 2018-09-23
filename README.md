@@ -1,6 +1,6 @@
 # firebase-nuxt-quiz
 
-> Nuxt.js project
+> Nuxt.js + Firebase Database/Auth simple quiz project
 
 ## Build Setup
 

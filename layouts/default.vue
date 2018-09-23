@@ -1,11 +1,38 @@
 <template>
   <div class="app-core">
-      <div class="logout" v-if="$store.state.isLogged">
-            sss
+      <div class="app__logout"
+           v-if="$store.getters['user/isAuthenticated']"
+            @click="signOut">
+          <span class="app__mail">{{mail}}</span>
+          <i class="material-icons">
+              exit_to_app
+          </i>
       </div>
       <nuxt/>
   </div>
 </template>
+
+<script>
+    export default {
+      computed:{
+        mail(){
+          return this.$store.getters['user/getUser'].email;
+        }
+      },
+      methods:{
+        async signOut(){
+          try{
+            await this.$fir.auth().signOut();
+
+            this.$store.dispatch('user/resetUser');
+            this.$router.push({path: '/'});
+          }catch(e){
+            console.log('exc', e);
+          }
+        }
+      }
+    };
+</script>
 
 <style lang="scss">
   html,body{
@@ -32,6 +59,24 @@
     a{
       font-family: 'Lora', serif;
     }
+      .app__logout{
+          position:fixed;
+          top:18px;
+          right:20px;
+          z-index:99999;
+          cursor:pointer;
+          .app__mail{
+              color:#fff;
+              font-size:1.25em;
+              position:relative;
+              top:-9px;
+              left:-10px;
+          }
+          i{
+              font-size:1.9em;
+              color: #fff;
+          }
+      }
   }
 </style>
 
