@@ -1,22 +1,23 @@
 export const state = () => ({
-  user2: {},
+  user: {},
   startedQuiz: false
 });
 
 export const getters = {
-  isAuthenticated: state => Object.keys(state.user2).length >= 1 && !!state.user2,
-  getUser: state => state.user2
+  isAuthenticated: state => Object.keys(state.user).length >= 1 && !!state.user,
+  getUser: state => state.user,
+  getUid: state => state.user.uid
 };
 
 export const actions = {
   resetUser ({state}) {
-    state.user2 = {}
+    state.user = {}
   }
 };
 
 export const mutations = {
   setUser (state, user) {
-    state.user2 = user;
+    state.user = user;
     //return this.dispatch('setAccountRef', `accounts/${state.user.uid}`)
   },
   stanceQuiz(state, stance){

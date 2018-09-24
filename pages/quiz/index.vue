@@ -7,14 +7,37 @@
                 <p class="intro__description">{{this.quiz.description}}</p>
                 <button class="intro__button" @click="start">Start</button>
             </div>
-            <div v-else-if="currentQuestion == 0" :key="2">
-                ABC
+            <template v-if="currentQuestion < questionAmount && !isIntro">
+                <tmp-no-photo
+                        v-if="!('photo' in quiz.questions[currentQuestion])"
+                        :key="2"
+                        :question="quiz.questions[currentQuestion]"
+                        @choose="picked"
+                />
+                <tmp-left-photo
+                        v-else-if="'photo' in quiz.questions[currentQuestion] && quiz.questions[currentQuestion].photo.template === 'left'"
+                        :key="2"
+                        :question="quiz.questions[currentQuestion]"
+                        @choose="picked"
+                />
+                <tmp-right-photo
+                        v-else-if="'photo' in quiz.questions[currentQuestion] && quiz.questions[currentQuestion].photo.template === 'right'"
+                        :key="2"
+                        :question="quiz.questions[currentQuestion]"
+                        @choose="picked"
+                />
+            </template>
+            <div v-else>
+                FINISH
             </div>
         </transition>
     </section>
 </template>
 
 <script>
+    import tmpNoPhoto from '@/components/question_templates/NoPhoto.vue';
+    import tmpLeftPhoto from '@/components/question_templates/LeftPhoto.vue';
+    import tmpRightPhoto from '@/components/question_templates/RightPhoto.vue';
 
   export default {
     transition: 'page',
@@ -31,6 +54,9 @@
     computed:{
       quiz(){
         return this.$store.getters['quizes/getQuizes'][+this.$store.getters['quizes/getCurrentQuiz']];
+      },
+      questionAmount(){
+        return Object.keys(this.quiz.questions).length;
       }
     },
     mounted(){
@@ -44,7 +70,24 @@
         setTimeout(()=>{
           this.isIntroFinished = true;
         }, 1000);
+      },
+      picked(val){
+        this.$store.dispatch('quizes/setAnswer', {
+          key: this.currentQuestion,
+          value: val,
+          uid: this.$store.getters['user/getUid'],
+          name: this.quiz.name
+        }).then(r => {
+          this.currentQuestion++;
+        }).catch(err => {
+          alert('blad');
+        })
       }
+    },
+    components:{
+      tmpNoPhoto,
+      tmpLeftPhoto,
+      tmpRightPhoto
     }
   };
 </script>

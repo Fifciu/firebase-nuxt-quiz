@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 export const state = () => ({
   quizes: [],
   currentQuiz: null,
@@ -14,10 +16,26 @@ export const mutations = {
     },
     nextQuestion(state){
       state.currentQuestion++;
-    },
-    setAnswer(state, payload){
-      state.asnwers[payload.key] = payload.value;
     }
+};
+
+export const actions = {
+  setAnswer({state}, payload){
+    state.answers[payload.key] = payload.value;
+    // uid, name
+    firebase.database().ref('results/' + payload.uid + "/" + payload.name)
+    .set({
+      answers: state.answers
+    });
+  },
+  finishQuiz(state, payload){
+    firebase.database().ref('results/' + payload.uid + "/" + payload.name)
+    .set({
+      answers: state.answers,
+      finished: true,
+      result: Math.round((state.answers.filter(v => v === 0).length / state.currentQuestion)*100)
+    });
+  }
 };
 
 export const getters = {
