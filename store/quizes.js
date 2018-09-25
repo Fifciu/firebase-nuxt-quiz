@@ -16,6 +16,14 @@ export const mutations = {
     },
     nextQuestion(state){
       state.currentQuestion++;
+    },
+    clearAnswears(state){
+      state.answers = [];
+    },
+    clearQuizState(state){
+      state.currentQuiz = null
+      state.currentQuestion = 0
+      state.answers = []
     }
 };
 
@@ -40,7 +48,8 @@ export const actions = {
 
 export const getters = {
   getQuizes: state => state.quizes,
-  getCurrentQuiz: state => state.currentQuiz
+  getCurrentQuiz: state => state.currentQuiz,
+  getAnswers: state => state.answers
 };
 
 export const strict = false;

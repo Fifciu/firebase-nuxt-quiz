@@ -52,7 +52,7 @@ export default {
 
   section.container{
     width:100%;
-    min-height:100vh;
+    height:100vh;
     display:flex;
     align-items: center;
     justify-content: center;
@@ -104,6 +104,7 @@ export default {
         animation: fib-anim 1s forwards;
         filter: blur(0px);
         opacity:1;
+        width:80%;
       }
     }
 

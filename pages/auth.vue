@@ -25,7 +25,7 @@
               </span>
               <input
                       class="animated"
-                      type="text"
+                      type="email"
                       :key="2"
                       name="email"
                       placeholder="Email"
@@ -108,24 +108,15 @@ export default {
     }
   },
   methods:{
-    signIn(){
-      // this.asyncAction = true;
-      // try{
-      //       let {user} = await this.$fir.auth().signInWithEmailAndPassword(this.email, this.password);
-      //       this.$store.commit('user/setUser', user);
-      //       this.$router.push('/pick-quiz');
-      // } catch(e){
-      //       //ERROR
-      // }
-      // this.asyncAction = false;
+    async signIn(){
       this.asyncAction = true;
-      this.$fir.auth().signInWithEmailAndPassword(this.email, this.password)
-          .then(result =>{
-            this.$store.commit('user/setUser', result.user);
+      try{
+            let {user} = await this.$fir.auth().signInWithEmailAndPassword(this.email, this.password);
+            this.$store.commit('user/setUser', user);
             this.$router.push('/pick-quiz');
-        }).catch(err => {
-            console.log('err', err);
-      });
+      } catch(e){
+            //ERROR
+      }
       this.asyncAction = false;
     },
     async signUp(){
@@ -159,7 +150,7 @@ export default {
 
   section.container-auth{
     width:100%;
-    min-height:100vh;
+    height:100vh;
     display:flex;
     align-items: center;
     justify-content: center;

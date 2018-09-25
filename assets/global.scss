@@ -1,3 +1,7 @@
+button{
+  -webkit-appearance: none;
+}
+
 .fib-button{
   color: #000;
   background:#fff;
@@ -11,6 +15,9 @@
   text-decoration: none;
   margin-top: 10px;
   font-weight:bold;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .page-enter-active, .page-leave-active {

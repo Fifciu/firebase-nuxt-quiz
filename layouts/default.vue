@@ -1,5 +1,6 @@
 <template>
   <div class="app-core">
+      <transition name="fade-page">
       <div class="app__logout"
            v-if="$store.getters['user/isAuthenticated']"
             @click="signOut">
@@ -8,6 +9,7 @@
               exit_to_app
           </i>
       </div>
+      </transition>
       <nuxt/>
   </div>
 </template>
@@ -61,10 +63,22 @@
     }
       .app__logout{
           position:fixed;
-          top:18px;
-          right:20px;
+          top:5px;
+          right:10px;
           z-index:99999;
           cursor:pointer;
+
+          &:before{
+              content:'';
+              position:absolute;
+              z-index:-1;
+              width:200%;
+              height:200%;
+              background:#111;
+              border-bottom-left-radius: 80%;
+              transform:translateY(-30%) translateX(-30%);
+          }
+
           .app__mail{
               color:#fff;
               font-size:1.25em;

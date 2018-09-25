@@ -27,8 +27,23 @@
                         @choose="picked"
                 />
             </template>
-            <div v-else>
-                FINISH
+            <div v-else-if="currentQuestion >= questionAmount && !isIntro" class="frame__finish" :key="5">
+                <img class="finish__icon" :src="this.quiz.icon" :alt="this.quiz.name"/>
+                <h1 class="finish__header">{{this.quiz.name}}</h1>
+                <h3 class="finish__subheader">Gratulations! You have finished quiz. Check your results in table below...</h3>
+                <div class="finish__table">
+                    <div class="table__question" v-for="i in results" :key="i.question"
+                         :class="{'answer--proper': i.isProper, 'answer--bad': !i.isProper}">
+                        <span class="question" key="1">
+                            <b>Q:</b> {{i.question}}
+                        </span>
+                        <span class="answer" key="2">
+                            <b>A: </b>{{i.answer}}
+                        </span>
+                    </div>
+                    <div class="table__points">{{percent}}% of good answers</div>
+                </div>
+                <button class="table__btn" @click="backToQuizes">Back to quizes</button>
             </div>
         </transition>
     </section>
@@ -48,7 +63,9 @@
         yetAnimed: false,
         currentQuestion: 0,
         isIntro: true,
-        isIntroFinished: false
+        isIntroFinished: false,
+        results: {},
+        percent: 0
       };
     },
     computed:{
@@ -64,9 +81,30 @@
         this.yetAnimed = true;
       }, 100);
     },
+    watch:{
+      currentQuestion(n,o){
+        if(n >= this.questionAmount){
+          const answers = this.$store.getters['quizes/getAnswers'];
+          const baseObj = [];
+          let isp = 0;
+          for(let i = 0, len = answers.length; i < len; i++){
+            baseObj[i] = {
+              question: this.quiz.questions[i].text,
+              answer: this.quiz.questions[i].answears[answers[i]],
+              isProper: answers[i]==0
+            };
+            if(baseObj[i].isProper) isp++;
+          }
+
+          this.results = baseObj;
+          this.percent = Math.round((isp/answers.length)*10000)/100;
+        }
+      }
+    },
     methods:{
       start(){
         this.isIntro = false;
+        this.$store.commit('quizes/clearAnswears');
         setTimeout(()=>{
           this.isIntroFinished = true;
         }, 1000);
@@ -80,8 +118,12 @@
         }).then(r => {
           this.currentQuestion++;
         }).catch(err => {
-          alert('blad');
+         // alert('blad');
         })
+      },
+      backToQuizes(){
+        this.$store.commit('quizes/clearQuizState');
+        this.$router.push({path:'/pick-quiz'});
       }
     },
     components:{
@@ -111,7 +153,11 @@
             justify-content:center;
         }
     }
-    .frame__intro{
+
+    .frame__finish{
+        margin-top:45px;
+    }
+    .frame__intro, .frame__finish{
         text-align:center;
         transition: opacity .55s, transform 1s;
 
@@ -120,21 +166,68 @@
             opacity:0;
         }
 
-        .intro__header, .intro__description{
+        .intro__header, .intro__description, .finish__header, .finish__subheader{
             margin:0;
         }
         .intro__header{
             font-size:3em;
+        }
+        .finish__header{
+            font-size: 2em;
+        }
+        .finish__subheader{
+            font-size:.89em;
+            padding: 5px 20px 0px;
+        }
+        .finish__table{
+            margin-top:15px;
+            .table__question{
+                -webkit-box-shadow: -1px 10px 50px -10px rgba(0,0,0,0.43);
+                -moz-box-shadow: -1px 10px 50px -10px rgba(0,0,0,0.43);
+                box-shadow: -1px 10px 50px -10px rgba(0,0,0,0.43);
+                margin-bottom: 10px;
+                padding:6px 2px;
+                background: rgb(255,255,255);
+                background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15309873949579833) 50%, rgba(255,255,255,0) 100%);
+
+                &.answer--proper{
+                    background: rgb(0,255,0);
+                    background: linear-gradient(90deg, rgba(0,255,0,.3) 0%, rgba(0,255,0,0.45309873949579833) 50%, rgba(0,255,0,.3) 100%);
+                }
+
+                &.answer--bad{
+                    background: rgb(255,0,0);
+                    background: linear-gradient(90deg, rgba(255,0,0,.3) 0%, rgba(255,0,0,0.45309873949579833) 50%, rgba(255,0,0,.3) 100%);
+                }
+
+                span{
+                    display:block;
+                    &.question{
+                        font-size:.92em;
+                    }
+                    &.answer{
+                        font-weight:bold;
+                    }
+                }
+            }
+
+            .table__points{
+                color:#fff;
+                font-size: 1.35em;
+                padding: 15px 0;
+                margin-bottom: 5px;
+                font-weight:bold;
+            }
         }
         .intro__description{
             font-size:1em;
             letter-spacing: 2px;
             padding: 0 20px;
         }
-        .intro__icon{
+        .intro__icon, .finish__icon{
             max-width:200px;
         }
-        .intro__button{
+        .intro__button, .table__btn{
             -webkit-box-shadow: inset -1px -1px 51px -7px rgba(0,0,0,0.75);
             -moz-box-shadow: inset -1px -1px 51px -7px rgba(0,0,0,0.75);
             box-shadow: inset -1px -1px 51px -7px rgba(0,0,0,0.75);
@@ -168,6 +261,10 @@
                     transform: skew(60deg) translateX(150%);
                 }
             }
+        }
+        .table__btn{
+            margin-top: -5px;
+            margin-bottom: 20px;
         }
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="cmp-quiz-picker" :class="{'doneYet': properAnswears}"
+    <div class="cmp-quiz-picker" :class="{'doneYet': properAnswears !== null, 'badResult': percent < 30.0}"
          @click="clickOnQuiz">
         <div>
             <img :src="icon" :alt="name"/>
@@ -8,10 +8,9 @@
                 <h5 v-if="!properAnswears">Questions: {{questions_amount}}</h5>
             </div>
         </div>
-        <template v-if="properAnswears">
+        <template v-if="properAnswears !== null">
             <h5 class="resultCenter">Answears: {{properAnswears}}/{{questions_amount}}</h5>
-            <h5 class="resultLeftBottom">{{Math.round(properAnswears/questions_amount*10000)/100}}%</h5>
-
+            <h5 class="resultLeftBottom">{{percent}}%</h5>
         </template>
     </div>
 </template>
@@ -44,6 +43,11 @@
             // localStorage.setItem('fuxt-current-quiz', this.name);
         }
       }
+    },
+    computed:{
+      percent(){
+        return Math.round(this.properAnswears/this.questions_amount*10000)/100;
+      }
     }
   };
 </script>
@@ -70,15 +74,6 @@
         box-shadow: 0px 0px 35px -5px rgba(0,0,0,0.75);
 
         transition: .8s;
-
-        &.doneYet{
-            background: #008e00;
-            .pixel-spinner{
-                position:absolute;
-                opacity:0;
-                transform:scale(.7);
-            }
-        }
 
         &:first-of-type{
             margin-top: 15px;
@@ -150,6 +145,12 @@
             }
         }
 
+
+        img{
+            max-width:30%;
+
+        }
+
         &:hover{
             background:#fff;
             cursor: pointer;
@@ -161,85 +162,22 @@
                 }
             }
         }
+        animation: background-anim 1s forwards;
 
-        img{
-            max-width:30%;
-
-        }
-    }
-    section.container.quiz-picker.finished{
-        .cmp-quiz-picker{
-            animation: background-anim 1s forwards;
-
-            &.doneYet{
-                overflow:hidden;
-                position:relative;
-                transition:1s;
-               >div, div+h5, div+h5+h5{
-                   transition:.5s;
-               }
-                &:before{
-                    content:'Would you like to try again?';
-                    width:100%;
-                    height:100%;
-                    background: #0F2027;  /* fallback for old browsers */
-                    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-                    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-                    color:#eee;
-                    position:absolute;
-                    top:0;
-                    left:0;
-                    transform:translateX(100%);
-                    transition:.7s;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-
-                    font-size:1.7em;
-                }
-                &:after{
-                    content:'Yes!';
-                    padding: 7px 30px;
-                    background: #fff;
-                    color:#111;
-                    position:absolute;
-
-                    bottom:25%;
-                    border-radius:7px;
-                    opacity:0;
-
-
-                    transform:translateY(300%) scale(.7);
-                    transition:.7s;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                }
-                &:hover{
-                    >div{
-                        transform:translateX(-100%);
-                    }
-                    div+h5, div+h5+h5{
-                        transform:translateX(-1000%);
-                    }
-                    &:before{
-                        transform: translateX(0%);
-                        z-index:1;
-                    }
-                    &:after{
-                        transform: translateY(0%) scale(1);
-                        opacity:1;
-                        z-index:2;
-                    }
-                    .pixel-spinner{
-                        position:absolute;
-                        transform:scale(1) translateY(-20%);
-                        z-index:3;
-                        opacity:.5;
-                    }
-                }
+        &.doneYet{
+            background: #008e00;
+            color:#fff;
+            overflow:hidden;
+            position:relative;
+            cursor: not-allowed;
+            transition:.7s;
+            &:hover{
+                border-bottom-right-radius:20%;
+                opacity:.5;
             }
+        }
+        &.badResult{
+            background: #ac0000;
         }
     }
 

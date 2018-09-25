@@ -5,7 +5,7 @@
             <div class="answers">
                 <cmp-answer
                         v-for="(i,index) in shuffledAnswers"
-                        :answerText="i"
+                        :answerText="i.toString()"
                         :answerNumber="index"
                         :key="index"
                         @choose="picked(index)"
@@ -21,7 +21,7 @@
 <script>
   import cmpAnswer from '@/components/Answer.vue';
   export default {
-    name: 'Question Template - Right photo',
+    name: 'QuestionTemplate_RightPhoto',
     props:{
       question:{
         type: Object,

@@ -9,22 +9,8 @@
                     :icon="i.icon"
                     :questions_amount="Object.keys(i.questions).length"
                     @pick="startQuiz(index)"
+                    :properAnswears="results[i.name] !== undefined ? results[i.name] : null"
             />
-            <!--<quiz-picker-->
-                    <!--v-for="(i,index) in quizes"-->
-                    <!--:key="index+5"-->
-                    <!--:name="i.name"-->
-                    <!--:icon="i.icon"-->
-                    <!--:questions_amount="Object.keys(i.questions).length"-->
-                    <!--:properAnswears="3"-->
-            <!--/>-->
-            <!--<quiz-picker-->
-                    <!--v-for="(i,index) in quizes"-->
-                    <!--:key="index+10"-->
-                    <!--:name="i.name"-->
-                    <!--:icon="i.icon"-->
-                    <!--:questions_amount="Object.keys(i.questions).length"-->
-            <!--/>-->
         </div>
     </section>
 </template>
@@ -40,8 +26,26 @@
         .orderByChild("name")
         .once("value");
       data = data.toJSON();
+
+      //console.log('results/' + context.store.getters['user/getUser'].uid);
+
+      let results = await context.app.$fir.database()
+          .ref('results/' + context.store.getters['user/getUser'].uid)
+          .once("value");
+
+      /*
+      * someobj
+      * {quizname}: {properAnswers}
+      * */
+      let t = results.toJSON()
+      let nr = {};
+      for(const [k,v] of Object.entries(t)){
+        nr[k] = Object.values(v.answers).filter(v => v == 0).length
+      }
+
       return {
-        quizes: data
+        quizes: data,
+        results: nr
       };
     },
     data(){
@@ -52,6 +56,12 @@
       };
     },
     mounted(){
+      /*
+      * someobj
+      * {quizname}: {properAnswers}
+      * */
+
+
       this.$store.commit('quizes/setQuizes', this.quizes);
       setTimeout(()=>{
         this.yetAnimed = true;
@@ -75,20 +85,19 @@
         display:block;
     }
     .quiz-picker{
+        margin-top:0px;
         > div{
             display:flex;
             flex-wrap:wrap;
-            justify-content: center;
         }
         h1{
-            transform:translateY(-100%);
+            text-align: left;
             transition:.7s;
             width: 100%;
-            font-size:2em;
-            text-align:center;
+            font-size:1.8em;
             margin:0;
-            background: #222;
-            padding: 15px 0;
+            padding: 15px 20px;
+            background: rgba(255,255,255,.1);
             -webkit-box-shadow: 0px 10px 35px -6px rgba(0,0,0,0.25);
             -moz-box-shadow: 0px 10px 35px -6px rgba(0,0,0,0.25);
             box-shadow: 0px 10px 35px -6px rgba(0,0,0,0.25);
