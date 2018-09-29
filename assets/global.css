@@ -18,6 +18,41 @@ button {
   -moz-appearance: none;
   appearance: none; }
 
+.fib-button--special {
+  -webkit-box-shadow: inset -1px -1px 51px -7px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: inset -1px -1px 51px -7px rgba(0, 0, 0, 0.75);
+  box-shadow: inset -1px -1px 51px -7px rgba(0, 0, 0, 0.75);
+  background: transparent;
+  color: #fff;
+  border: 0;
+  padding: 10px 30px;
+  font-size: 1.24em;
+  margin-top: 13px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 2s, border-radius .7s; }
+  .fib-button--special:before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    background: rgba(255, 255, 255, 0.7);
+    bottom: 0;
+    left: 0;
+    transform: skew(40deg) translateX(-120%);
+    transition: .6s; }
+  .fib-button--special:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px; }
+    .fib-button--special:hover:before {
+      transform: skew(60deg) translateX(150%); }
+
+.fib-button--special {
+  margin-top: -5px;
+  margin-bottom: 20px; }
+
 .page-enter-active, .page-leave-active {
   transition: all .30s ease-out; }
 

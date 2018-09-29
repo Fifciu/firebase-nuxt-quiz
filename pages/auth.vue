@@ -51,10 +51,12 @@
                     :key="4"/>
           </transition-group>
             <div>
-                <input type="submit" class="fib-button" value="Sign up"
-                       :disabled="!passwordLength || !emailLength"
-                       @click="signUp"
-                />
+                <button type="button" class="fib-button"
+                        :disabled="!passwordLength || !emailLength"
+                        @click="signUp"
+                >
+                    Sign up
+                </button>
                 <input type="submit" class="fib-button fib-button--green" value="Or in"
                        :disabled="!passwordLength || !emailLength"
                        @click="signIn"/>
@@ -115,7 +117,14 @@ export default {
             this.$store.commit('user/setUser', user);
             this.$router.push('/pick-quiz');
       } catch(e){
-            //ERROR
+        switch(e.code){
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            alert("Bad email or password");
+            break;
+          default:
+            alert("Something went wrong, sorry :(");
+        }
       }
       this.asyncAction = false;
     },
@@ -126,7 +135,13 @@ export default {
         this.$store.commit('user/setUser', user);
         this.$router.push('/pick-quiz');
       }catch(e){
-        // ERROR
+        switch(e.code){
+          case 'auth/email-already-in-use':
+            alert("Email already used");
+            break;
+          default:
+            alert("Something went wrong, sorry :(");
+        }
       }
       this.asyncAction = false;
     }
@@ -229,7 +244,7 @@ export default {
         transition:1.2s;
           color:#fff;
       }
-      input[type="submit"]{
+      input[type="submit"], button.fib-button{
         cursor:pointer;
         &:disabled{
           opacity:.6;

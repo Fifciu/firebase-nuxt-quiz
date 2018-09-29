@@ -1,5 +1,5 @@
 <template>
-  <section class="container" :class="{'finished': yetAnimed, 'exiting': exitAnim}">
+  <section class="container container__intro" :class="{'finished': yetAnimed, 'exiting': exitAnim}">
     <div>
       <img class="fib-logo" src="/firebase.png" alt="Firebase Logo"/>
       <h1 class="title">
@@ -50,9 +50,11 @@ export default {
     transform: translate(-30px, 0);
   }
 
+  .container__intro{
+    height:100vh;
+  }
   section.container{
     width:100%;
-    height:100vh;
     display:flex;
     align-items: center;
     justify-content: center;

@@ -1,51 +1,51 @@
 <template>
-    <section class="container" :class="{'finished': yetAnimed, 'container--intro': !isIntroFinished}">
-        <transition name="frame" mode="out-in">
-            <div v-if="isIntro" class="frame__intro" :key="1">
-                <img class="intro__icon" :src="this.quiz.icon" :alt="this.quiz.name"/>
-                <h1 class="intro__header">{{this.quiz.name}}</h1>
-                <p class="intro__description">{{this.quiz.description}}</p>
-                <button class="intro__button" @click="start">Start</button>
-            </div>
-            <template v-if="currentQuestion < questionAmount && !isIntro">
-                <tmp-no-photo
-                        v-if="!('photo' in quiz.questions[currentQuestion])"
-                        :key="2"
-                        :question="quiz.questions[currentQuestion]"
-                        @choose="picked"
-                />
-                <tmp-left-photo
-                        v-else-if="'photo' in quiz.questions[currentQuestion] && quiz.questions[currentQuestion].photo.template === 'left'"
-                        :key="2"
-                        :question="quiz.questions[currentQuestion]"
-                        @choose="picked"
-                />
-                <tmp-right-photo
-                        v-else-if="'photo' in quiz.questions[currentQuestion] && quiz.questions[currentQuestion].photo.template === 'right'"
-                        :key="2"
-                        :question="quiz.questions[currentQuestion]"
-                        @choose="picked"
-                />
-            </template>
-            <div v-else-if="currentQuestion >= questionAmount && !isIntro" class="frame__finish" :key="5">
-                <img class="finish__icon" :src="this.quiz.icon" :alt="this.quiz.name"/>
-                <h1 class="finish__header">{{this.quiz.name}}</h1>
-                <h3 class="finish__subheader">Gratulations! You have finished quiz. Check your results in table below...</h3>
-                <div class="finish__table">
-                    <div class="table__question" v-for="i in results" :key="i.question"
-                         :class="{'answer--proper': i.isProper, 'answer--bad': !i.isProper}">
-                        <span class="question" key="1">
-                            <b>Q:</b> {{i.question}}
-                        </span>
-                        <span class="answer" key="2">
-                            <b>A: </b>{{i.answer}}
-                        </span>
-                    </div>
-                    <div class="table__points">{{percent}}% of good answers</div>
+    <section class="container container--father" :class="{'finished': yetAnimed, 'container--intro': !isIntroFinished, 'outing': movingOut}">
+        <div class="container__quiz">
+            <i class="material-icons icon--back" @click="backToQuizes">
+                keyboard_arrow_left
+            </i>
+            <transition name="frame" mode="out-in">
+                <div v-if="isIntro" class="frame__intro" :key="1">
+                    <img class="intro__icon" :src="this.quiz.icon" :alt="this.quiz.name"/>
+                    <h1 class="intro__header">{{this.quiz.name}}</h1>
+                    <p class="intro__description">{{this.quiz.description}}</p>
+                    <button class="intro__button" @click="start">Start</button>
                 </div>
-                <button class="table__btn" @click="backToQuizes">Back to quizes</button>
-            </div>
-        </transition>
+                <template v-if="currentQuestion < questionAmount && !isIntro">
+                    <template
+                            v-for="(i,index) in quiz.questions"
+                            v-if="currentQuestion == index"
+                    >
+                        <tmp-no-photo
+                                v-if="!('photo' in i)"
+                                :key="i.text + 2"
+                                :question="i"
+                                @choose="picked"
+                        />
+                        <tmp-left-photo
+                                v-else-if="'photo' in i && i.photo.template === 'left'"
+                                :key="i.text + 3"
+                                :question="quiz.questions[currentQuestion]"
+                                @choose="picked"
+                        />
+                        <tmp-right-photo
+                                v-else-if="'photo' in i && i.photo.template === 'right'"
+                                :key="i.text + 4"
+                                :question="quiz.questions[currentQuestion]"
+                                @choose="picked"
+                        />
+                    </template>
+                </template>
+                <tmp-finisher
+                        v-else-if="currentQuestion >= questionAmount && !isIntro"
+                        :key="5"
+                        :name="quiz.name"
+                        :icon="quiz.icon"
+                        :results="results"
+                        :percent="percent"
+                />
+            </transition>
+        </div>
     </section>
 </template>
 
@@ -53,10 +53,11 @@
     import tmpNoPhoto from '@/components/question_templates/NoPhoto.vue';
     import tmpLeftPhoto from '@/components/question_templates/LeftPhoto.vue';
     import tmpRightPhoto from '@/components/question_templates/RightPhoto.vue';
+    import tmpFinisher from '@/components/question_templates/Finisher.vue';
 
   export default {
     transition: 'page',
-    middleware: 'no-quiz-index',
+    middleware: ['no-quiz-index', 'protected'],
     name: 'quiz',
     data(){
       return {
@@ -65,7 +66,8 @@
         isIntro: true,
         isIntroFinished: false,
         results: {},
-        percent: 0
+        percent: 0,
+        movingOut: false
       };
     },
     computed:{
@@ -122,14 +124,17 @@
         })
       },
       backToQuizes(){
-        this.$store.commit('quizes/clearQuizState');
-        this.$router.push({path:'/pick-quiz'});
+        //this.movingOut = true;
+        setTimeout(() => {
+          this.$router.push({path:'/pick-quiz'});
+        }, 500);
       }
     },
     components:{
       tmpNoPhoto,
       tmpLeftPhoto,
-      tmpRightPhoto
+      tmpRightPhoto,
+      tmpFinisher
     }
   };
 </script>
@@ -144,19 +149,45 @@
         opacity:0;
     }
 
+    .container__quiz{
+        padding:30px 0px;
+        width:100%;
+    }
+
+    .container--father{
+        height:100vh;
+    }
     .container{
         width:100%;
-        min-height:100vh;
+       // min-height:100vh;
+
         display:flex;
+        transition:.5s;
         &.container--intro{
             align-items:center;
             justify-content:center;
+            //max-height:100vh;
+            overflow:hidden;
+        }
+        /*&.finished:not(.quiz-picker){*/
+           /*// padding:25px 0px;*/
+        /*}*/
+        &.outing{
+            opacity:0;
+        }
+
+        .icon--back{
+            position:absolute;
+            left:10px;
+            top:10px;
+            color:#fff;
+            border: 2px solid #eee;
+            border-radius:50%;
+            padding: 1px;
+            cursor:pointer;
         }
     }
 
-    .frame__finish{
-        margin-top:45px;
-    }
     .frame__intro, .frame__finish{
         text-align:center;
         transition: opacity .55s, transform 1s;

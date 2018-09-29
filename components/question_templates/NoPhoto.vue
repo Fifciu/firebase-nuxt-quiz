@@ -30,9 +30,7 @@
       };
     },
     mounted(){
-      const properAnswer = this.question.answears[0];
-      this.shuffledAnswers = this.shuffle(Object.values(this.question.answears));
-      this.properId = this.shuffledAnswers.findIndex(v => v === properAnswer);
+      this.init();
     },
     methods:{
       shuffle(a) {
@@ -47,6 +45,11 @@
             .findIndex(v => v === this.shuffledAnswers[index]);
 
         this.$emit('choose', realId);
+      },
+      init(){
+        const properAnswer = this.question.answears[0];
+        this.shuffledAnswers = this.shuffle(Object.values(this.question.answears));
+        this.properId = this.shuffledAnswers.findIndex(v => v === properAnswer);
       }
     },
     components:{

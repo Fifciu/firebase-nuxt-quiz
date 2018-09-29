@@ -24,6 +24,14 @@ export const mutations = {
       state.currentQuiz = null
       state.currentQuestion = 0
       state.answers = []
+    },
+    resetQuizes(state){
+      state = {
+        quizes: [],
+        currentQuiz: null,
+        currentQuestion: 0,
+        answers: []
+      };
     }
 };
 

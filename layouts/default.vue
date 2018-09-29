@@ -18,7 +18,10 @@
     export default {
       computed:{
         mail(){
-          return this.$store.getters['user/getUser'].email;
+          const isntMobile = this.$store.getters['device/getDeviceType'].indexOf("mobile") === -1
+          if(isntMobile)
+            return this.$store.getters['user/getUser'].email
+          return this.$store.getters['user/getUser'].email.length > 8 ? (this.$store.getters['user/getUser'].email.substring(0,7)+"...") : this.$store.getters['user/getUser'].email;
         }
       },
       methods:{
@@ -27,9 +30,10 @@
             await this.$fir.auth().signOut();
 
             this.$store.dispatch('user/resetUser');
+            this.$store.dispatch('quizes/resetQuizes');
             this.$router.push({path: '/'});
           }catch(e){
-            console.log('exc', e);
+
           }
         }
       }
@@ -42,6 +46,7 @@
   }
   div.app-core{
     width:100vw;
+      max-width:100vw;
     min-height:100vh;
     overflow:hidden;
     background: #DA4453;  /* fallback for old browsers */
@@ -74,14 +79,20 @@
               z-index:-1;
               width:200%;
               height:200%;
-              background:#111;
+              background: #0f0c29;  /* fallback for old browsers */
+              background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+              background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+              border-bottom: 4px dashed #fff;
               border-bottom-left-radius: 80%;
               transform:translateY(-30%) translateX(-30%);
+              -webkit-box-shadow: inset 10px -7px 39px 5px rgba(0,0,0,0.34);
+              -moz-box-shadow: inset 10px -7px 39px 5px rgba(0,0,0,0.34);
+              box-shadow: inset 10px -7px 39px 5px rgba(0,0,0,0.34);
           }
 
           .app__mail{
               color:#fff;
-              font-size:1.25em;
+              font-size:1em;
               position:relative;
               top:-9px;
               left:-10px;

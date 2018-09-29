@@ -2,15 +2,17 @@
     <section class="container quiz-picker" :class="{'finished': yetAnimed}">
         <div>
             <h1>Pick quiz</h1>
-            <quiz-picker
-                    v-for="(i,index) in quizes"
-                    :key="index"
-                    :name="i.name"
-                    :icon="i.icon"
-                    :questions_amount="Object.keys(i.questions).length"
-                    @pick="startQuiz(index)"
-                    :properAnswears="results[i.name] !== undefined ? results[i.name] : null"
-            />
+            <div class="quizes">
+                <quiz-picker
+                        v-for="(i,index) in quizes"
+                        :key="index"
+                        :name="i.name"
+                        :icon="i.icon"
+                        :questions_amount="Object.keys(i.questions).length"
+                        @pick="startQuiz(index)"
+                        :properAnswears="results !== undefined && results[i.name] !== undefined ? results[i.name] : null"
+                />
+            </div>
         </div>
     </section>
 </template>
@@ -27,8 +29,6 @@
         .once("value");
       data = data.toJSON();
 
-      //console.log('results/' + context.store.getters['user/getUser'].uid);
-
       let results = await context.app.$fir.database()
           .ref('results/' + context.store.getters['user/getUser'].uid)
           .once("value");
@@ -38,14 +38,19 @@
       * {quizname}: {properAnswers}
       * */
       let t = results.toJSON()
-      let nr = {};
-      for(const [k,v] of Object.entries(t)){
-        nr[k] = Object.values(v.answers).filter(v => v == 0).length
+      if(t){
+        let nr = {};
+        for(const [k,v] of Object.entries(t)){
+          nr[k] = Object.values(v.answers).filter(v => v == 0).length
+        }
+        return {
+          quizes: data,
+          results: nr
+        };
       }
 
       return {
-        quizes: data,
-        results: nr
+        quizes: data
       };
     },
     data(){
@@ -56,12 +61,7 @@
       };
     },
     mounted(){
-      /*
-      * someobj
-      * {quizname}: {properAnswers}
-      * */
-
-
+      this.$store.commit('quizes/clearQuizState');
       this.$store.commit('quizes/setQuizes', this.quizes);
       setTimeout(()=>{
         this.yetAnimed = true;
@@ -80,16 +80,26 @@
 </script>
 
 <style lang="scss">
+    @import '~assets/global.scss';
+
     section.container.quiz-picker{
         background:rgba(0,0,0,0);
         display:block;
     }
     .quiz-picker{
         margin-top:0px;
-        > div{
+        padding-bottom:30px;
+        overflow: hidden;
+        height: auto;
+
+        div.quizes{
+            width:100%;
+            height:100%;
             display:flex;
+
             flex-wrap:wrap;
         }
+
         h1{
             text-align: left;
             transition:.7s;
@@ -107,6 +117,12 @@
             h1{
                 transform: translateY(0%);
                 justify-content:flex-start;
+            }
+        }
+
+        @include for-size(tablets){
+            div.quizes{
+                padding-left:20px;
             }
         }
     }

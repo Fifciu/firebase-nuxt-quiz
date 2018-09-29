@@ -12,6 +12,7 @@ export const getters = {
 export const actions = {
   resetUser ({state}) {
     state.user = {}
+    state.startedQuiz = false
   }
 };
 
