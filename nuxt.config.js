@@ -41,7 +41,8 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+	publicPath: '/static'
   },
   plugins:[
       './plugins/firebase.js',
@@ -53,7 +54,8 @@ module.exports = {
       [ '@nuxtjs/pwa', { meta: false }]
   ],
    router:{
-     middleware: 'global'
+     middleware: 'global',
+	base: '/firebase-nuxt-quiz/'
    },
 
   workbox: {

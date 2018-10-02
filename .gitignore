@@ -14,4 +14,4 @@ dist
 todo
 sw.*
 firebase.js
-.idea/*
+\.idea/*
