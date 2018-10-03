@@ -4,40 +4,40 @@ importScripts('/firebase-nuxt-quiz/static/workbox.5c678697.js')
 
 workbox.precaching.precacheAndRoute([
   {
-    "url": "/firebase-nuxt-quiz/staticapp.94859cc0fe7950883ae5.js",
-    "revision": "7d9b24b86a0e7693f5177269ffba4d09"
+    "url": "/firebase-nuxt-quiz/static/app.e505bfba56bf31cccc35.js",
+    "revision": "d399152a0c276dd0d39c2ca8481cfc14"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticlayouts/default.ea51cb69252f45388b2a.js",
+    "url": "/firebase-nuxt-quiz/static/layouts/default.ea51cb69252f45388b2a.js",
     "revision": "48583a0c51f8605de595b64eb4c887cb"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticmanifest.ccc4a6e40fdb2f7c0cc0.js",
-    "revision": "3afdd71ae9dbe53db92e0bedaa368c6d"
+    "url": "/firebase-nuxt-quiz/static/manifest.ce7586751803ceda11e1.js",
+    "revision": "7ace62f1ec9189bc2bf84b2ec3960654"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticpages/auth.38c093c498f5af260b1d.js",
+    "url": "/firebase-nuxt-quiz/static/pages/auth.38c093c498f5af260b1d.js",
     "revision": "a14a45a04f419f3688ae81abb3eca173"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticpages/index.7174e6c74cc9daeb6268.js",
+    "url": "/firebase-nuxt-quiz/static/pages/index.7174e6c74cc9daeb6268.js",
     "revision": "394cb12485aeed02bb81ac7b83bc4c08"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticpages/pick-quiz/index.4ea666d973cb557e6173.js",
+    "url": "/firebase-nuxt-quiz/static/pages/pick-quiz/index.4ea666d973cb557e6173.js",
     "revision": "67c7c46c824288be814f475cccc66b6f"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticpages/quiz/_quizname.a4900f0f0c053fc215c5.js",
+    "url": "/firebase-nuxt-quiz/static/pages/quiz/_quizname.a4900f0f0c053fc215c5.js",
     "revision": "79b0f051c8fa8bec63a2f45b4a413d22"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticpages/quiz/index.8b280bf49c5f82db849d.js",
+    "url": "/firebase-nuxt-quiz/static/pages/quiz/index.8b280bf49c5f82db849d.js",
     "revision": "067994f15c08df63eb647778e6f94300"
   },
   {
-    "url": "/firebase-nuxt-quiz/staticvendor.162dc88b14870ddf4695.js",
-    "revision": "69505432a211f7d144478a048d801b84"
+    "url": "/firebase-nuxt-quiz/static/vendor.0d3048b754e7e8b1ae16.js",
+    "revision": "4d53dfe7fee5cfb3d2b2bcdbf428c0cc"
   }
 ], {
   "cacheId": "firebase-nuxt-quiz",
