@@ -12,24 +12,24 @@ workbox.precaching.precacheAndRoute([
     "revision": "48583a0c51f8605de595b64eb4c887cb"
   },
   {
-    "url": "/firebase-nuxt-quiz/static/manifest.ce7586751803ceda11e1.js",
-    "revision": "7ace62f1ec9189bc2bf84b2ec3960654"
+    "url": "/firebase-nuxt-quiz/static/manifest.f251c46230e209c6fb4b.js",
+    "revision": "58745ebb385cb9928a7354c6243e3cd7"
   },
   {
     "url": "/firebase-nuxt-quiz/static/pages/auth.38c093c498f5af260b1d.js",
     "revision": "a14a45a04f419f3688ae81abb3eca173"
   },
   {
-    "url": "/firebase-nuxt-quiz/static/pages/index.7174e6c74cc9daeb6268.js",
-    "revision": "394cb12485aeed02bb81ac7b83bc4c08"
+    "url": "/firebase-nuxt-quiz/static/pages/index.cf2349c4dd5e3b470f36.js",
+    "revision": "6d81f9c90828265f8e5c990855d3827d"
   },
   {
-    "url": "/firebase-nuxt-quiz/static/pages/pick-quiz/index.4ea666d973cb557e6173.js",
-    "revision": "67c7c46c824288be814f475cccc66b6f"
+    "url": "/firebase-nuxt-quiz/static/pages/pick-quiz/index.ae4c6a9ec856371c730e.js",
+    "revision": "78db021bdc818a8d5e3051b735201365"
   },
   {
-    "url": "/firebase-nuxt-quiz/static/pages/quiz/_quizname.a4900f0f0c053fc215c5.js",
-    "revision": "79b0f051c8fa8bec63a2f45b4a413d22"
+    "url": "/firebase-nuxt-quiz/static/pages/quiz/_quizname.f703ab7239d24a1afe26.js",
+    "revision": "8bc2d21e43b32ba08f4faa70277b7fe0"
   },
   {
     "url": "/firebase-nuxt-quiz/static/pages/quiz/index.8b280bf49c5f82db849d.js",
