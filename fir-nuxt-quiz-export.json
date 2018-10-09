@@ -1,0 +1,61 @@
+{
+  "quizes" : [ {
+    "description" : "Quiz that testing your knowledge in Vue JS framework",
+    "icon" : "vue.png",
+    "name" : "Vuequiz",
+    "questions" : [ {
+      "answears" : [ "Evan You", "Evan Me", "Bruce You", "Bruce Me" ],
+      "text" : "Who is author of Vue JS?"
+    }, {
+      "answears" : [ "set", "reactiveSet", "refresh", "deepSet" ],
+      "photo" : {
+        "template" : "left",
+        "url" : "reactivity.png"
+      },
+      "text" : "Which method should we use meanwhile problems with reactivity?"
+    }, {
+      "answears" : [ 3, 4, 3.5, 2 ],
+      "photo" : {
+        "template" : "right",
+        "url" : "gui.png"
+      },
+      "text" : "Which version of Vue CLI provides gui panel?"
+    } ]
+  }, {
+    "description" : "Quiz that testing your knowledge in PHP",
+    "icon" : "php.png",
+    "name" : "Phpquiz",
+    "questions" : [ {
+      "answears" : [ "Scope resolution operator", "Server's value", "Easter egg" ],
+      "text" : "What is T_PAAMAYIM_NEKUDOTAYIM?"
+    }, {
+      "answears" : [ "Disabling errors", "Overriding", "Debugging mode" ],
+      "photo" : {
+        "template" : "left",
+        "url" : "reactivity.png"
+      },
+      "text" : "What is purpose of @ in Php?"
+    }, {
+      "answears" : [ "by count function", "by len property", "by length property", "by len method" ],
+      "photo" : {
+        "template" : "right",
+        "url" : "gui.png"
+      },
+      "text" : "How to get length of an array in PHP ?"
+    } ]
+  }, null, {
+    "description" : "Quiz that testing your knowledge in Google's Go language",
+    "icon" : "go.png",
+    "name" : "Goquiz",
+    "questions" : [ {
+      "answears" : [ "x := []int{5,2,6,1,33}", "var x [5]int", "x := [5]int{1,2,3,4,5}", "var x [5]int = {1,2,1,1,1}" ],
+      "text" : "Which one is example of composite literal?"
+    }, {
+      "answears" : [ "No", "Yes" ],
+      "text" : "Can we create global variable with := operator?"
+    }, {
+      "answears" : [ "x := map[int]string{\"Philip\":10,\"Michael\": 15}", "x := map[int][string]{\"Philip\":10,\"Michael\": 15}", "x := make(map(int,string))" ],
+      "text" : "How to create map?"
+    } ]
+  } ]
+}

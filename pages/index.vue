@@ -1,7 +1,7 @@
 <template>
   <section class="container container__intro" :class="{'finished': yetAnimed, 'exiting': exitAnim}">
     <div>
-      <img class="fib-logo" src="/firebase.png" alt="Firebase Logo"/>
+      <img class="fib-logo" src="firebase.png" alt="Firebase Logo"/>
       <h1 class="title">
         Fuxt Quiz
       </h1>

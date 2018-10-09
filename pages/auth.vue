@@ -11,18 +11,6 @@
       <div class="form">
         <form @submit.prevent="">
             <transition-group name="fade-page">
-              <span
-                      class="form-warning animated"
-                      :key="1" v-if="!emailLength && email.length != 0 && wasInEmail">
-                  <i class="material-icons">error</i>
-                  At least 6 chars!
-              </span>
-                <span
-                        class="form-warning animated"
-                        :key="5" v-if="!emailProper && wasInEmail">
-                  <i class="material-icons">error</i>
-                  Bad form of email
-              </span>
               <input
                       class="animated"
                       type="email"
@@ -34,12 +22,6 @@
                       :class="{'bad': !emailLength && email.length != 0}"/>
             </transition-group>
           <transition-group name="fade-page">
-              <span
-                      class="form-warning animated"
-                      :key="3" v-if="!passwordLength && password.length != 0 && wasInPassword">
-                  <i class="material-icons">error</i>
-                  At least 8 characters!
-              </span>
             <input
                     type="password"
                     name="password"
@@ -414,4 +396,5 @@ export default {
       margin-bottom:-55px;
     }
   }
+
 </style>

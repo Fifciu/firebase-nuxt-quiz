@@ -24,7 +24,7 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#ffffff', height: '4px' },
   /*
   ** Build configuration
   */
@@ -42,7 +42,7 @@ module.exports = {
         })
       }
     },
-	publicPath: '/static'
+	publicPath: '/static/'
   },
   plugins:[
       './plugins/firebase.js',
@@ -55,7 +55,7 @@ module.exports = {
   ],
    router:{
      middleware: 'global',
-	base: '/firebase-nuxt-quiz/'
+	   base: process.env.DEPLOY_ENV === 'GH_PAGES' ? '/firebase-nuxt-quiz/' : '/'
    },
 
   workbox: {

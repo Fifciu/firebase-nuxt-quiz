@@ -2,7 +2,7 @@
         <div class="cmp-quiz-picker" :class="{'doneYet': properAnswears !== null, 'badResult': percent < 30.0 && properAnswears !== null}"
              @click="clickOnQuiz($event.target)">
             <div>
-                <img :src="'/'+icon" :alt="name"/>
+                <img :src="icon" :alt="name"/>
                 <div>
                     <h2>{{name}}</h2>
                     <h5 v-if="!properAnswears">Questions: {{questions_amount}}</h5>

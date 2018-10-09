@@ -1,7 +1,7 @@
 <template>
         <tmp-finisher
             :name="name"
-            :icon="'/'+icon"
+            :icon="icon"
             :results="quizresult"
             :percent="percent"
         />
