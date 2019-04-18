@@ -3,7 +3,7 @@
 > Nuxt.js + Firebase Database/Auth simple quiz project
 > Created in order to learn something about Firebase
 
-Live version: https://filipjedrasik.github.io/firebase-nuxt-quiz/
+Live version: https://fifciu.github.io/firebase-nuxt-quiz/
 
 ## How to install
 Clone this repo
